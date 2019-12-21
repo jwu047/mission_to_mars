@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Jason Wu</title>
+    <!-- Bootstrap CDN: https://www.bootstrapcdn.com/ -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Container for button and text -->
+        <!-- https://getbootstrap.com/docs/4.0/components/jumbotron/ -->
+        <div clas="jumbotron text-center">
+            <h1>Mission to Mars</h1>
+            <!-- Goes to scrape page that runs py file-->
+            <p>
+                <a class="btn btn-primary btn-lg" href="/scrape" role="button">
+                    Scrape New Data
+                </a>
+            </p>
+        </div>
+
+        <!-- News-->
+        <!-- https://getbootstrap.com/docs/4.0/layout/media-object/ -->
+        <div id="mars-news" class="row">
+            <div class="col-md-12">
+                <div class="media">
+                    <div class="media-body">
+                        <h2>Latest Mars News</h2>
+                        <h4 class="media-heading">{{ mars.news_title }}</h4>
+                        <p>{{ mars.news_paragraph }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Featured Image -->
+        <div id="mars-featured-image" class="row">
+            <div class="col-md-8">
+                <h2>Featured Mars Image</h2>
+                <!-- Default error image if no image available -->
+                <img src="{{ mars.featured_image | default('static/images/error.png', true) }}" class="img-responsive" alt="Image Responsive">
+            </div>
+        </div>
+
+        <!-- Weather -->
+        <!-- https://www.w3schools.com/bootstrap/bootstrap_panels.asp -->
+        <div class="col-md-4">
+            <div id="mars-weather" class="row">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h4>Current Weather on Mars</h4>
+                        <p>{{ mars.weather }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mars Facts -->
+        <div id="mars-facts" class="row">
+            <div class="col-md-12">
+                <h4>Mars Facts</h4>
+                <!-- https://stackoverflow.com/questions/52644035/how-to-show-a-pandas-dataframe-into-a-existing-flask-html-table/52644615 -->
+                {{ mars.facts | safe}}
+            </div>
+        </div>
+
+        <!-- Create thumbnails for each of the hemispheres -->
+        <!-- https://getbootstrap.com/docs/4.4/content/images/ -->
+        {% for hemisphere in mars.hemispheres %}
+        <div class="col-md-6">
+            <div class="thumbnail">
+                <div class="caption">
+                        <h3>{{ hemisphere.title }}</h3>
+                </div>
+                <img src="{{ hemisphere.img_url | default('static/images/error.png', true) }}">
+
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+
+</html>
